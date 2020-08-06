@@ -3,6 +3,7 @@ package iterate;
 import model.DailyData;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class CompleteDailyData {
         List<DailyData> dataList = new ArrayList<>();
         LocalDate startDay = LocalDate.now().minusWeeks(1);
         LocalDate endDay = LocalDate.now();
-        dataList.add(DailyData.builder().data(20).date(startDay).build());
-        dataList.add(DailyData.builder().data(10).date(endDay).build());
+        dataList.add(DailyData.builder().data(BigDecimal.ONE).date(startDay).build());
+        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(endDay).build());
         //补全过去一周的每日数据
         List<DailyData> newList = complete(startDay, endDay, dataList);
         newList.forEach(System.out::println);
@@ -51,7 +52,7 @@ public class CompleteDailyData {
                 newList.add(oldMap.get(c));
             } else {
                 //没有这一天的数据，默认补0
-                newList.add(DailyData.builder().data(0).date(c).build());
+                newList.add(DailyData.builder().data(BigDecimal.ZERO).date(c).build());
             }
         });
         return newList;

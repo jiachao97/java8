@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -20,7 +21,7 @@ public class DailyData {
     /**
      * 每日数据量
      */
-    private Integer data;
+    private BigDecimal data;
 
     /**
      * 日期
