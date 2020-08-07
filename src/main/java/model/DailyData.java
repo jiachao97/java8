@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
  * @author jiac
  * @date 2020/8/5 11:15
  */
+@EqualsAndHashCode
 @Getter
 @Builder
 @ToString
