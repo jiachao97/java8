@@ -8,8 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * description：数据去重demo
- * distinct、filter、TreeSet
+ * description：数据去重demo(distinct / filter / TreeSet)
  *
  * @author jiac
  * @date 2020/8/6 10:35
