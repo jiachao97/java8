@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * description：排序demo
  * Stream<T> sorted(); //自然排序，需要实现Comparable接口
- * Stream<T> sorted(Comparator<? super T> comparator); //定制排序，Comparator可以使用lambda表达式初始化
+ * Stream<T> sorted(Comparator<? super T> comparator); //定制排序，Comparator是一个函数式接口，可以使用lambda表达式实现
  *
  * @author jiac
  * @date 2020/8/5 15:12
