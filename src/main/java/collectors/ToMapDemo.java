@@ -78,12 +78,15 @@ public class ToMapDemo {
         System.out.println("按日期分组，返回LinkedHashMap：" + dateLinkedHashMap);
 
         /**
+         * public static <T, U, A, R>
+         *     Collector<T, ?, R> mapping(Function<? super T, ? extends U> mapper,
+         *                                Collector<? super U, A, R> downstream) {}
          * Collectors.mapping的第一个参数是一个Function接口，用来对流中的元素做进一步属性转换；第二个参数是一个收集器
-         * 按日期分组，返回每组数据量
+         * 按日期分组后，返回每组的数据量
          */
         Map<LocalDate, List<BigDecimal>> dataMap = dataList.stream()
                 .collect(Collectors.groupingBy(DailyData::getDate, Collectors.mapping(DailyData::getData, Collectors.toList())));
         //output：{2020-08-13=[10], 2020-08-06=[10, 1]}
-        System.out.println("按日期分组，返回每组数据量：" + dataMap);
+        System.out.println("按日期分组后，返回每组的数据量：" + dataMap);
     }
 }
