@@ -18,8 +18,8 @@ public class DeduplicateDemo {
     public static void main(String[] args) {
         List<DailyData> dataList = new ArrayList<>();
         dataList.add(DailyData.builder().data(BigDecimal.ZERO).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
         dataList.add(DailyData.builder().data(BigDecimal.ZERO).date(LocalDate.now()).build());
+        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
         dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now().plusWeeks(1)).build());
         dataList.add(DailyData.builder().data(BigDecimal.ONE).date(LocalDate.now().plusWeeks(1)).build());
 
@@ -38,7 +38,7 @@ public class DeduplicateDemo {
         System.out.println("filter过滤数据量为0的：" + dupByFilter);
 
         //TreeSet去重
-        Set<DailyData> set = new TreeSet<>(Comparator.comparing(DailyData::getDate));
+        TreeSet<DailyData> set = new TreeSet<>(Comparator.comparing(DailyData::getDate));
         set.addAll(dataList);
         System.out.println("TreeSet根据日期去重：" + set);
 
@@ -47,7 +47,7 @@ public class DeduplicateDemo {
          * 指定为实现了Comparator的TreeSet，Comparator是一个函数式接口，可以使用lambda表达式实现
          * 根据日期去重
          */
-        Set<DailyData> dupByCollection = dataList.stream()
+        TreeSet<DailyData> dupByCollection = dataList.stream()
                 .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(DailyData::getDate))));
         System.out.println("根据日期去重：" + dupByCollection);
 
@@ -55,7 +55,7 @@ public class DeduplicateDemo {
          * 多条件去重，根据日期+数据量去重
          * 使用 ; 将日期和数据量拼接成字符串，作为TreeMap的key进行compareTo
          */
-        Set<DailyData> dupByDateAndData = dataList.stream()
+        TreeSet<DailyData> dupByDateAndData = dataList.stream()
                 .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(c -> c.getDate() + ";" + c.getData()))));
         System.out.println("多条件去重：" + dupByDateAndData);
 
