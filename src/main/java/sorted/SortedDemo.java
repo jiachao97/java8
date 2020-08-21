@@ -4,16 +4,12 @@ import model.DailyData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * description：排序demo
- * Stream<T> sorted(); //自然排序，需要实现Comparable接口
- * Stream<T> sorted(Comparator<? super T> comparator); //定制排序，Comparator是一个函数式接口，可以使用lambda表达式实现
+ * 使用Stream对List和Map排序
  *
  * @author jiac
  * @date 2020/8/5 15:12
@@ -21,6 +17,7 @@ import java.util.stream.Collectors;
 public class SortedDemo {
 
     public static void main(String[] args){
+        //list排序
         List<DailyData> dataList = new ArrayList<>();
         dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
         dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now().minusWeeks(1)).build());
@@ -29,7 +26,7 @@ public class SortedDemo {
 
         System.out.println("未排序：" + dataList);
 
-        //按日期排序
+        //按日期排序，Comparator是一个函数式接口，可以使用lambda表达式实现
         List<DailyData> sortByDate = dataList.stream()
                 .sorted(Comparator.comparing(DailyData::getDate))
                 .collect(Collectors.toList());
@@ -70,5 +67,56 @@ public class SortedDemo {
                 .sorted(Comparator.comparing(DailyData::getData, Comparator.nullsLast(BigDecimal::compareTo)))
                 .collect(Collectors.toList());
         System.out.println("按数据量排序，Null值放在最后面：" + sortByDataLastNull);
+
+        //Map排序
+        Map<LocalDate, BigDecimal> map = new HashMap<>();
+        map.put(LocalDate.now(), BigDecimal.TEN);
+        map.put(LocalDate.now().minusWeeks(1), BigDecimal.ZERO);
+        map.put(LocalDate.now().plusWeeks(1), BigDecimal.ONE);
+
+        System.out.println("未排序：" + map);
+
+        /**
+         * public static <K extends Comparable<? super K>, V> Comparator<Map.Entry<K,V>> comparingByKey() {
+         *     return (Comparator<Map.Entry<K, V>> & Serializable)
+         *          (c1, c2) -> c1.getKey().compareTo(c2.getKey());
+         * }
+         * 对任意的c1, c2进行比较，然后将结果强制转换成一个可序列化的Comparator<Map.Entry<K, V>>
+         *
+         * public static <T, K, U, M extends Map<K, U>>
+         * Collector<T, ?, M> toMap(Function<? super T, ? extends K> keyMapper,
+         *                          Function<? super T, ? extends U> valueMapper,
+         *                          BinaryOperator<U> mergeFunction,
+         *                          Supplier<M> mapSupplier) {}
+         * 前两个参数是一个Function函数式接口，用来指定生成key和value的策略；
+         * 第三个参数用来指定当key重复时的操作，这里key重复保留旧值；
+         * 第四个参数用来指定生成Map的类型，这里要保证排序后的顺序，用LinkedHashMap
+         */
+        LinkedHashMap<LocalDate, BigDecimal> sortedByKey = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new));
+        System.out.println("按key排序：" + sortedByKey);
+
+        //按key排序逆序
+        LinkedHashMap<LocalDate, BigDecimal> reverseOrderByKey = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new));
+        System.out.println("按key排序逆序：" + reverseOrderByKey);
+
+        //按value排序
+        LinkedHashMap<LocalDate, BigDecimal> sortedByValue = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new));
+        System.out.println("按value排序：" + sortedByValue);
+
+        //按value排序逆序
+        LinkedHashMap<LocalDate, BigDecimal> reversedByValue = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new));
+        System.out.println("按value排序逆序：" + reversedByValue);
     }
 }
