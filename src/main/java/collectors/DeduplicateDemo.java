@@ -53,7 +53,7 @@ public class DeduplicateDemo {
 
         /**
          * 多条件去重，根据日期+数据量去重
-         * 使用 ; 将日期和数据量拼接成字符串，作为TreeMap的key进行compareTo
+         * 这里使用 ; 将日期和数据量拼接成字符串，作为TreeMap的key进行比较
          */
         TreeSet<DailyData> dupByDateAndData = dataList.stream()
                 .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(c -> c.getDate() + ";" + c.getData()))));
