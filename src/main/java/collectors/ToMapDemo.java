@@ -18,8 +18,8 @@ public class ToMapDemo {
 
     public static void main(String[] args){
         List<DailyData> dataList = new ArrayList<>();
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now().plusWeeks(1)).build());
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.TEN));
+        dataList.add(new DailyData(LocalDate.now().plusWeeks(1), BigDecimal.TEN));
 
         /**
          * 两个参数的Collectors.toMap，默认创建的是HashMap，当key重复时，直接抛出异常
@@ -34,7 +34,7 @@ public class ToMapDemo {
         System.out.println("dateMap：" + dateMap);
 
         //此处put一个重复的key
-        dataList.add(DailyData.builder().data(BigDecimal.ONE).date(LocalDate.now()).build());
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.ONE));
 
         /**
          * 三个参数的Collectors.toMap，第三个参数是一个BinaryOperator函数式接口，用来指定当key重复时的操作
@@ -100,6 +100,11 @@ public class ToMapDemo {
                 .collect(Collectors.groupingBy(DailyData::getDate, Collectors.mapping(DailyData::getData, Collectors.toList())));
         //output：{2020-08-27=[10], 2020-08-20=[10, 1]}
         System.out.println("按日期分组后，返回每组的数据量：" + dataMap);
+
+        Map<LocalDate, BigDecimal> dataReduceMap = dataList.stream()
+                .collect(Collectors.groupingBy(DailyData::getDate, Collectors.mapping(DailyData::getData, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+        //output：{2020-08-27=10, 2020-08-20=11}
+        System.out.println("按日期分组后，返回每组的数据量总和：" + dataReduceMap);
 
         /**
          * 三个参数的Collectors.groupingBy() ，第二个参数是一个Supplier函数式接口，生产者，用来指定生成Map的类型

@@ -26,8 +26,8 @@ public class CompleteDailyData {
         List<DailyData> dataList = new ArrayList<>();
         LocalDate startDay = LocalDate.now().minusWeeks(1);
         LocalDate endDay = LocalDate.now();
-        dataList.add(DailyData.builder().data(BigDecimal.ONE).date(startDay).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(endDay).build());
+        dataList.add(new DailyData(startDay, BigDecimal.ONE));
+        dataList.add(new DailyData(endDay, BigDecimal.TEN));
         //补全过去一周的每日数据
         List<DailyData> newList = complete(startDay, endDay, dataList);
         newList.forEach(System.out::println);
@@ -52,7 +52,7 @@ public class CompleteDailyData {
                 newList.add(oldMap.get(c));
             } else {
                 //没有这一天的数据，默认补0
-                newList.add(DailyData.builder().data(BigDecimal.ZERO).date(c).build());
+                newList.add(new DailyData(c, BigDecimal.ZERO));
             }
         });
         return newList;

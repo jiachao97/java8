@@ -1,9 +1,6 @@
 package model;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,20 +11,18 @@ import java.time.LocalDate;
  * @author jiac
  * @date 2020/8/5 11:15
  */
-@EqualsAndHashCode
-@Getter
-@Builder
-@ToString
+@Data
+@AllArgsConstructor
 public class DailyData {
-
-    /**
-     * 每日数据量
-     */
-    private BigDecimal data;
 
     /**
      * 日期
      */
     private LocalDate date;
+
+    /**
+     * 每日数据量
+     */
+    private BigDecimal data;
 }
 

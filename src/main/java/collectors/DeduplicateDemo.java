@@ -17,11 +17,11 @@ public class DeduplicateDemo {
 
     public static void main(String[] args) {
         List<DailyData> dataList = new ArrayList<>();
-        dataList.add(DailyData.builder().data(BigDecimal.ZERO).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.ZERO).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now().plusWeeks(1)).build());
-        dataList.add(DailyData.builder().data(BigDecimal.ONE).date(LocalDate.now().plusWeeks(1)).build());
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.ZERO));
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.ZERO));
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.TEN));
+        dataList.add(new DailyData(LocalDate.now().plusWeeks(1), BigDecimal.TEN));
+        dataList.add(new DailyData(LocalDate.now().plusWeeks(1), BigDecimal.ONE));
 
         System.out.println("未去重：" + dataList);
 

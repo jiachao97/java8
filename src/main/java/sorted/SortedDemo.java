@@ -19,10 +19,10 @@ public class SortedDemo {
     public static void main(String[] args){
         //list排序
         List<DailyData> dataList = new ArrayList<>();
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(BigDecimal.TEN).date(LocalDate.now().minusWeeks(1)).build());
-        dataList.add(DailyData.builder().data(BigDecimal.ONE).date(LocalDate.now()).build());
-        dataList.add(DailyData.builder().data(null).date(LocalDate.now().plusWeeks(1)).build());
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.TEN));
+        dataList.add(new DailyData(LocalDate.now().minusWeeks(1), BigDecimal.TEN));
+        dataList.add(new DailyData(LocalDate.now(), BigDecimal.ONE));
+        dataList.add(new DailyData(LocalDate.now().plusWeeks(1), null));
 
         System.out.println("未排序：" + dataList);
 
