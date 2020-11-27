@@ -116,5 +116,9 @@ public class ToMapDemo {
         LinkedHashMap<LocalDate, List<DailyData>> dateLinkedHashMap = dataList.stream()
                 .collect(Collectors.groupingBy(DailyData::getDate, LinkedHashMap::new, Collectors.toList()));
         System.out.println("按日期分组，返回LinkedHashMap：" + dateLinkedHashMap);
+
+        Map<LocalDate, DailyData> topOneMap = dataList.stream()
+                .collect(Collectors.groupingBy(DailyData::getDate, Collectors.collectingAndThen(Collectors.toList(), c -> c.get(0))));
+        System.out.println("按日期分组，返回每组中的第一个元素：" + topOneMap);
     }
 }
